@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'utils/app_theme.dart';
-import 'screens/home_screen.dart';
+import 'screens/artist_catalog_screen.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,7 +15,7 @@ class MyApp extends StatelessWidget {
       title: 'ApnaKaarikar',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
-      home: const HomeScreen(),
+      home: const ArtistCatalogScreen(),
     );
   }
 }
