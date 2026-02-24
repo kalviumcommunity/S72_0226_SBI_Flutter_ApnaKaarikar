@@ -47,10 +47,10 @@ class AppTheme {
       ),
     ),
     
-    cardTheme: CardTheme(
+    cardTheme: const CardThemeData(
       elevation: 2.0,
       shape: RoundedRectangleBorder(
-        borderRadius: BorderRadius.circular(8.0),
+        borderRadius: BorderRadius.all(Radius.circular(8.0)),
       ),
       color: surfaceColor,
     ),
