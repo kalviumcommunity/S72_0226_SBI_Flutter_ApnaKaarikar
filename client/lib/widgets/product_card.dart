@@ -6,17 +6,20 @@ import '../models/product.dart';
 class ProductCard extends StatelessWidget {
   final Product product;
   final VoidCallback onTap;
+  final VoidCallback? onLongPress;
 
   const ProductCard({
-    Key? key,
+    super.key,
     required this.product,
     required this.onTap,
-  }) : super(key: key);
+    this.onLongPress,
+  });
 
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
       onTap: onTap,
+      onLongPress: onLongPress,
       child: Card(
         elevation: 2.0,
         shape: RoundedRectangleBorder(

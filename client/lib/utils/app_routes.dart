@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import '../screens/artist_catalog_screen.dart';
 import '../screens/product_detail_screen.dart';
 import '../screens/home_screen.dart';
+import '../screens/login_screen.dart';
+import '../screens/signup_screen.dart';
+import '../screens/add_product_screen.dart';
+import '../screens/edit_product_screen.dart';
 import '../models/product.dart';
 import '../models/artist.dart';
 import 'page_transitions.dart';
@@ -14,6 +18,10 @@ class AppRoutes {
   static const String artistCatalog = '/artist-catalog';
   static const String productDetail = '/product-detail';
   static const String demo = '/demo';
+  static const String login = '/login';
+  static const String signUp = '/signup';
+  static const String addProduct = '/add-product';
+  static const String editProduct = '/edit-product';
 
   // Route generator
   static Route<dynamic> generateRoute(RouteSettings settings) {
@@ -44,6 +52,30 @@ class AppRoutes {
       case demo:
         return FadeRoute(
           page: const HomeScreen(),
+        );
+
+      case login:
+        return FadeRoute(
+          page: const LoginScreen(),
+        );
+
+      case signUp:
+        return SlideRightRoute(
+          page: const SignUpScreen(),
+        );
+
+      case addProduct:
+        return SlideRightRoute(
+          page: const AddProductScreen(),
+        );
+
+      case editProduct:
+        final product = settings.arguments as Product?;
+        if (product == null) {
+          return _errorRoute('Product not provided');
+        }
+        return SlideRightRoute(
+          page: EditProductScreen(product: product),
         );
 
       default:

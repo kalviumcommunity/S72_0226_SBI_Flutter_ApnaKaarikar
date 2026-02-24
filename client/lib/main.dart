@@ -25,7 +25,7 @@ class MyApp extends StatelessWidget {
       title: 'ApnaKaarikar',
       debugShowCheckedModeBanner: false,
       theme: AppTheme.lightTheme,
-      initialRoute: AppRoutes.home,
+      initialRoute: AppRoutes.login, // Start with login
       onGenerateRoute: AppRoutes.generateRoute,
     );
   }
