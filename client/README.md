@@ -22,6 +22,13 @@ Flutter mobile app for local artisans to showcase and sell their products.
 - Buy/Reserve CTAs
 - Navigation from catalog
 
+### Day 9 - Navigation & Routes ✅
+- Named routes configuration
+- Route generator with error handling
+- Smooth page transitions (Slide, Fade, Scale)
+- Navigation helper utility
+- Centralized route management
+
 ## Getting Started
 
 ### Prerequisites
@@ -80,7 +87,10 @@ client/lib/
 │   └── error_state.dart          # Error state
 └── utils/
     ├── app_theme.dart            # Theme config
-    └── constants.dart            # App constants
+    ├── constants.dart            # App constants
+    ├── app_routes.dart           # Route configuration
+    ├── page_transitions.dart     # Custom transitions
+    └── navigation_helper.dart    # Navigation utilities
 ```
 
 ## User Flow

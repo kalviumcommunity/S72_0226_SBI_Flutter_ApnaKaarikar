@@ -4,7 +4,7 @@ import '../models/product.dart';
 import '../widgets/custom_header.dart';
 import '../widgets/artist_header.dart';
 import '../widgets/product_card.dart';
-import 'product_detail_screen.dart';
+import '../utils/navigation_helper.dart';
 
 /// Artist Catalog Screen (Static with Mock Data)
 /// Displays artist profile and product catalog
@@ -53,14 +53,10 @@ class ArtistCatalogScreen extends StatelessWidget {
                   return ProductCard(
                     product: products[index],
                     onTap: () {
-                      Navigator.push(
+                      NavigationHelper.toProductDetail(
                         context,
-                        MaterialPageRoute(
-                          builder: (context) => ProductDetailScreen(
-                            product: products[index],
-                            artist: artist,
-                          ),
-                        ),
+                        product: products[index],
+                        artist: artist,
                       );
                     },
                   );
