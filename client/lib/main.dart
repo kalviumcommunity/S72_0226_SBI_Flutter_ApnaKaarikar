@@ -1,8 +1,18 @@
 import 'package:flutter/material.dart';
 import 'utils/app_theme.dart';
 import 'utils/app_routes.dart';
+import 'services/firebase_service.dart';
 
-void main() {
+void main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  
+  // Initialize Firebase (optional for now)
+  try {
+    await FirebaseService.initialize();
+  } catch (e) {
+    print('Running without Firebase: $e');
+  }
+  
   runApp(const MyApp());
 }
 

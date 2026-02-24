@@ -29,6 +29,14 @@ Flutter mobile app for local artisans to showcase and sell their products.
 - Navigation helper utility
 - Centralized route management
 
+### Day 10 - Firestore Integration ✅
+- Firebase Core setup
+- Firestore service implementation
+- Read products from Firestore
+- Real-time data streaming
+- Mock data fallback for development
+- Sample data seeding function
+
 ## Getting Started
 
 ### Prerequisites
@@ -93,7 +101,24 @@ client/lib/
     └── navigation_helper.dart    # Navigation utilities
 ```
 
-## User Flow
+## Firebase Setup
+
+The app is configured to work with or without Firebase:
+
+### Development Mode (Default)
+- Uses mock data
+- No Firebase configuration needed
+- All features work offline
+
+### Production Mode (With Firebase)
+1. Follow the [Firebase Setup Guide](FIREBASE_SETUP.md)
+2. Configure Firebase in your project
+3. Update `firebase_service.dart` with your credentials
+4. Set `_useMockData = false` in `artist_catalog_screen.dart`
+
+See [FIREBASE_SETUP.md](FIREBASE_SETUP.md) for detailed instructions.
+
+---
 
 1. **Artist Catalog Screen** - Browse products from an artisan
 2. **Tap Product Card** - Navigate to product details

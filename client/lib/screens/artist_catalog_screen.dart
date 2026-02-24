@@ -4,21 +4,80 @@ import '../models/product.dart';
 import '../widgets/custom_header.dart';
 import '../widgets/artist_header.dart';
 import '../widgets/product_card.dart';
+import '../widgets/loading_indicator.dart';
+import '../widgets/empty_state.dart';
+import '../widgets/error_state.dart';
 import '../utils/navigation_helper.dart';
+import '../services/firestore_service.dart';
 
-/// Artist Catalog Screen (Static with Mock Data)
-/// Displays artist profile and product catalog
-class ArtistCatalogScreen extends StatelessWidget {
-  const ArtistCatalogScreen({Key? key}) : super(key: key);
+/// Artist Catalog Screen (With Firestore Integration)
+/// Displays artist profile and product catalog from Firestore
+class ArtistCatalogScreen extends StatefulWidget {
+  final String? artistId;
+
+  const ArtistCatalogScreen({
+    Key? key,
+    this.artistId,
+  }) : super(key: key);
+
+  @override
+  State<ArtistCatalogScreen> createState() => _ArtistCatalogScreenState();
+}
+
+class _ArtistCatalogScreenState extends State<ArtistCatalogScreen> {
+  final FirestoreService _firestoreService = FirestoreService();
+  
+  Artist? _artist;
+  List<Product> _products = [];
+  bool _isLoading = true;
+  String? _errorMessage;
+  bool _useMockData = true; // Toggle for testing
+
+  @override
+  void initState() {
+    super.initState();
+    _loadData();
+  }
+
+  Future<void> _loadData() async {
+    setState(() {
+      _isLoading = true;
+      _errorMessage = null;
+    });
+
+    try {
+      if (_useMockData) {
+        // Use mock data for now
+        await Future.delayed(const Duration(milliseconds: 500));
+        _artist = _getMockArtist();
+        _products = _getMockProducts();
+      } else {
+        // Load from Firestore
+        final artistId = widget.artistId ?? 'default';
+        _artist = await _firestoreService.getArtist(artistId);
+        _products = await _firestoreService.getProductsByArtist(artistId);
+      }
+
+      setState(() {
+        _isLoading = false;
+      });
+    } catch (e) {
+      setState(() {
+        _errorMessage = e.toString();
+        _isLoading = false;
+      });
+    }
+  }
+
+  Future<void> _onRefresh() async {
+    await _loadData();
+  }
 
   @override
   Widget build(BuildContext context) {
-    final artist = _getMockArtist();
-    final products = _getMockProducts();
-
     return Scaffold(
       appBar: CustomHeader(
-        title: artist.name,
+        title: _artist?.name ?? 'Artist Catalog',
         actions: [
           IconButton(
             icon: const Icon(Icons.share),
@@ -32,11 +91,45 @@ class ArtistCatalogScreen extends StatelessWidget {
           ),
         ],
       ),
-      body: CustomScrollView(
+      body: _buildBody(),
+    );
+  }
+
+  Widget _buildBody() {
+    if (_isLoading) {
+      return const LoadingIndicator(
+        message: 'Loading products...',
+      );
+    }
+
+    if (_errorMessage != null) {
+      return ErrorState(
+        message: _errorMessage!,
+        onRetry: _loadData,
+      );
+    }
+
+    if (_artist == null) {
+      return ErrorState(
+        message: 'Artist not found',
+        onRetry: _loadData,
+      );
+    }
+
+    if (_products.isEmpty) {
+      return const EmptyState(
+        message: 'No products available yet',
+        icon: Icons.shopping_bag_outlined,
+      );
+    }
+
+    return RefreshIndicator(
+      onRefresh: _onRefresh,
+      child: CustomScrollView(
         slivers: [
           // Artist Header
           SliverToBoxAdapter(
-            child: ArtistHeader(artist: artist),
+            child: ArtistHeader(artist: _artist!),
           ),
           // Product Grid
           SliverPadding(
@@ -51,17 +144,17 @@ class ArtistCatalogScreen extends StatelessWidget {
               delegate: SliverChildBuilderDelegate(
                 (context, index) {
                   return ProductCard(
-                    product: products[index],
+                    product: _products[index],
                     onTap: () {
                       NavigationHelper.toProductDetail(
                         context,
-                        product: products[index],
-                        artist: artist,
+                        product: _products[index],
+                        artist: _artist!,
                       );
                     },
                   );
                 },
-                childCount: products.length,
+                childCount: _products.length,
               ),
             ),
           ),
