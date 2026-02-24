@@ -107,6 +107,64 @@ class FirestoreService {
     });
   }
 
+  /// Add a new product
+  Future<String> addProduct(Product product, String artistId) async {
+    try {
+      final data = product.toMap();
+      data['artistId'] = artistId;
+      data['createdAt'] = FieldValue.serverTimestamp();
+      data['updatedAt'] = FieldValue.serverTimestamp();
+
+      final docRef = await _firestore.collection(productsCollection).add(data);
+      return docRef.id;
+    } catch (e) {
+      throw Exception('Failed to add product: $e');
+    }
+  }
+
+  /// Update an existing product
+  Future<void> updateProduct(String productId, Product product) async {
+    try {
+      final data = product.toMap();
+      data['updatedAt'] = FieldValue.serverTimestamp();
+
+      await _firestore
+          .collection(productsCollection)
+          .doc(productId)
+          .update(data);
+    } catch (e) {
+      throw Exception('Failed to update product: $e');
+    }
+  }
+
+  /// Delete a product
+  Future<void> deleteProduct(String productId) async {
+    try {
+      await _firestore
+          .collection(productsCollection)
+          .doc(productId)
+          .delete();
+    } catch (e) {
+      throw Exception('Failed to delete product: $e');
+    }
+  }
+
+  /// Get a single product by ID
+  Future<Product?> getProduct(String productId) async {
+    try {
+      final doc = await _firestore
+          .collection(productsCollection)
+          .doc(productId)
+          .get();
+
+      if (!doc.exists) return null;
+
+      return Product.fromMap(doc.id, doc.data()!);
+    } catch (e) {
+      throw Exception('Failed to get product: $e');
+    }
+  }
+
   /// Add sample data to Firestore (for testing)
   Future<void> addSampleData() async {
     try {

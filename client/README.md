@@ -37,6 +37,16 @@ Flutter mobile app for local artisans to showcase and sell their products.
 - Mock data fallback for development
 - Sample data seeding function
 
+### Day 11 - Authentication ✅
+- Firebase Auth integration
+- Login screen (email/password)
+- Sign up screen with account type selection
+- Artist and Buyer account types
+- Form validation
+- Password reset functionality
+- Mock authentication for development
+- Session management
+
 ## Getting Started
 
 ### Prerequisites

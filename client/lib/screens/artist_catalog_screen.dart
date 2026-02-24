@@ -73,6 +73,22 @@ class _ArtistCatalogScreenState extends State<ArtistCatalogScreen> {
     await _loadData();
   }
 
+  Future<void> _handleAddProduct() async {
+    final result = await NavigationHelper.toAddProduct(context);
+    if (result == true) {
+      // Reload data after adding product
+      _loadData();
+    }
+  }
+
+  Future<void> _handleEditProduct(Product product) async {
+    final result = await NavigationHelper.toEditProduct(context, product);
+    if (result == true) {
+      // Reload data after editing product
+      _loadData();
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -92,6 +108,11 @@ class _ArtistCatalogScreenState extends State<ArtistCatalogScreen> {
         ],
       ),
       body: _buildBody(),
+      floatingActionButton: FloatingActionButton.extended(
+        onPressed: _handleAddProduct,
+        icon: const Icon(Icons.add),
+        label: const Text('Add Product'),
+      ),
     );
   }
 
@@ -151,6 +172,9 @@ class _ArtistCatalogScreenState extends State<ArtistCatalogScreen> {
                         product: _products[index],
                         artist: _artist!,
                       );
+                    },
+                    onLongPress: () {
+                      _handleEditProduct(_products[index]);
                     },
                   );
                 },

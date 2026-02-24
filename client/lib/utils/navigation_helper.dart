@@ -32,6 +32,30 @@ class NavigationHelper {
     return Navigator.pushNamed(context, AppRoutes.demo);
   }
 
+  /// Navigate to Login Screen
+  static Future<void> toLogin(BuildContext context) {
+    return Navigator.pushNamed(context, AppRoutes.login);
+  }
+
+  /// Navigate to Sign Up Screen
+  static Future<void> toSignUp(BuildContext context) {
+    return Navigator.pushNamed(context, AppRoutes.signUp);
+  }
+
+  /// Navigate to Add Product Screen
+  static Future<dynamic> toAddProduct(BuildContext context) {
+    return Navigator.pushNamed(context, AppRoutes.addProduct);
+  }
+
+  /// Navigate to Edit Product Screen
+  static Future<dynamic> toEditProduct(BuildContext context, Product product) {
+    return Navigator.pushNamed(
+      context,
+      AppRoutes.editProduct,
+      arguments: product,
+    );
+  }
+
   /// Navigate to Home Screen
   static Future<void> toHome(BuildContext context) {
     return Navigator.pushNamed(context, AppRoutes.home);
